@@ -104,6 +104,8 @@ import './index.css';
       let status;
       if (winner) {
         status = 'Winner: ' + winner;
+      } else if (this.state.stepNumber === 9) {
+        status = 'It\'s a tie!' 
       } else {
         status = 'Next player: ' + this.currentPlayer();
       }
