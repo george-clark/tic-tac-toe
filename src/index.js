@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
@@ -111,28 +111,88 @@ import './index.css';
       }
 
       return (
-        <div className="game">
-          <div className="game-board">
-            <Board 
-              squares = {current.squares}
-              onClick={(i) => this.handleClick(i)}
-            />
-          </div>
-          <div className="game-info">
-            <div>{status}</div>
-            <ol>{moves}</ol>
+        <div className="homepage">
+          <div className="game">
+            <div className="game-board">
+              <Board 
+                squares = {current.squares}
+                onClick={(i) => this.handleClick(i)}
+              />
+            </div>
+            <div className="game-info">
+              <div>{status}</div>
+              <ol>{moves}</ol>
+            </div>
           </div>
         </div>
       );
     }
   }
+
+  //setInterval(tick, 1000); 
+  class Clock extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        date: new Date(),
+        counter: 0
+      };
+    }
+
+    componentDidMount() {
+      this.timerID = setInterval(
+        () => this.tick(),
+        1000
+      );
+    }
+  
+    componentWillUnmount() {
+      clearInterval(this.timerID);
+    }
+
+    tick() {
+      this.setState({
+        date: new Date()
+      });
+
+      this.setState((state, props) => ({
+          counter: state.counter + 1
+      }));
+    }
+
+    render() {
+      return (
+        <div>
+          <h1>Hello world!</h1>
+          <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+          <h3>You have been on this website for {this.state.counter} seconds</h3>
+        </div>
+      )
+    }
+  }
+
+  class App extends React.Component {
+    render() {
+      return (
+        <div className="app">
+          <Clock />
+          <Game />
+          </div>
+      )
+    }
+  }
+
+  ReactDOM.render(
+    <App />,
+    document.getElementById('root')
+  );
   
   // ========================================
   
-  ReactDOM.render(
-    <Game />,
-    document.getElementById('root')
-  );
+  // ReactDOM.render(
+  //   <App />,
+  //   document.getElementById('root')
+  // );
   
   function calculateWinner(squares) {
     const lines = [
